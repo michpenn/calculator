@@ -30,6 +30,7 @@ body {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     text-align: right;
     letter-spacing: 1px;
+    margin-bottom: 2%;
 }
 
 .center_buttons_container {
@@ -52,8 +53,8 @@ body {
     transition: all 0.2s ease;
 }
 
-.btn button:hover {
-    background: #4f3043;
+ button:hover {
+    background: #4f3043 !important;
     box-shadow: 0 4px #6b54d3;
     color: white;
 }
