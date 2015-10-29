@@ -21,27 +21,29 @@
     <script src="http://Learning-Fuze.github.io/calculator/calculator.js"></script>
     <script>
 
-        function newFunc(type, value, item) {
+        function callback(type, value, item) {
+            console.log('type: ', type, ' value: ', value, ' item: ', item);
             switch (value) {
                 case undefined:
-                    $('.the_display').html('');
+                    $('#display_area').html('');
                     break;
                 default:
-                    $('.the_display').html(value);
+                    $('#display_area').html(value);
                     break;
             }
         }
 
-        var my_calculator = new calculator(newFunc);
-
+        var my_calculator = new calculator(callback);
 
         $(document).ready(function () {
-            $('.btn').on('click', function () {
+            $('button').on('click', function () {
                 var val = $(this).text();
-                console.log(val);
                 switch (val) {
                     case 'AC':
                         my_calculator.allClear();
+                        break;
+                    case 'C':
+                        my_calculator.clear();
                         break;
                     default:
                         my_calculator.addItem($(this).text());
@@ -56,7 +58,7 @@
 <body>
 <div class="container calculator">
     <div class="row">
-        <div class="col-md-12 the_display">
+        <div class="col-md-12 the_display" id="display_area">
         </div>
     </div>
     <div class="row">
