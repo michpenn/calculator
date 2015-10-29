@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
           integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
@@ -17,6 +18,40 @@
             integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ=="
             crossorigin="anonymous"></script>
     <link type="text/css" href="style.css" rel="stylesheet">
+    <script src="http://Learning-Fuze.github.io/calculator/calculator.js"></script>
+    <script>
+
+        function newFunc(type, value, item) {
+            switch (value) {
+                case undefined:
+                    $('.the_display').html('');
+                    break;
+                default:
+                    $('.the_display').html(value);
+                    break;
+            }
+        }
+
+        var my_calculator = new calculator(newFunc);
+
+
+        $(document).ready(function () {
+            $('.btn').on('click', function () {
+                var val = $(this).text();
+                console.log(val);
+                switch (val) {
+                    case 'AC':
+                        my_calculator.allClear();
+                        break;
+                    default:
+                        my_calculator.addItem($(this).text());
+                        break;
+                }
+                console.log(val, my_calculator);
+            });
+        })
+
+    </script>
 </head>
 <body>
 <div class="container calculator">
@@ -33,7 +68,7 @@
                             <button type="button" class="btn btn-default clear">C</button>
                         </div>
                         <div class="col-md-3">
-                            <button type="button" class="btn btn-default clear">CE</button>
+                            <button type="button" class="btn btn-default clear">AC</button>
                         </div>
                         <div class="col-md-4">
                             <button type="button" class="btn btn-default btn-block operator">+</button>
@@ -64,7 +99,7 @@
                             <button type="button" class="btn btn-default">6</button>
                         </div>
                         <div class="col-md-4">
-                            <button type="button" class="btn btn-default btn-block operator">X</button>
+                            <button type="button" class="btn btn-default btn-block operator">x</button>
                         </div>
                     </div>
                     <div class="row">
