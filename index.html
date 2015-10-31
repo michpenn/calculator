@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
           integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
@@ -17,11 +18,47 @@
             integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ=="
             crossorigin="anonymous"></script>
     <link type="text/css" href="style.css" rel="stylesheet">
+    <script src="http://Learning-Fuze.github.io/calculator/calculator.js"></script>
+    <script>
+
+        function callback(type, value, item) {
+            console.log('type: ', type, ' value: ', value, ' item: ', item);
+            switch (value) {
+                case undefined:
+                    $('#display_area').html('');
+                    break;
+                default:
+                    $('#display_area').html(value);
+                    break;
+            }
+        }
+
+        var my_calculator = new calculator(callback);
+
+        $(document).ready(function () {
+            $('button').on('click', function () {
+                var val = $(this).text();
+                switch (val) {
+                    case 'AC':
+                        my_calculator.allClear();
+                        break;
+                    case 'C':
+                        my_calculator.clear();
+                        break;
+                    default:
+                        my_calculator.addItem($(this).text());
+                        break;
+                }
+                console.log(val, my_calculator);
+            });
+        })
+
+    </script>
 </head>
 <body>
 <div class="container calculator">
     <div class="row">
-        <div class="col-md-12 the_display">
+        <div class="col-md-12 the_display" id="display_area">
         </div>
     </div>
     <div class="row">
@@ -33,7 +70,7 @@
                             <button type="button" class="btn btn-default clear">C</button>
                         </div>
                         <div class="col-md-3">
-                            <button type="button" class="btn btn-default clear">CE</button>
+                            <button type="button" class="btn btn-default clear">AC</button>
                         </div>
                         <div class="col-md-4">
                             <button type="button" class="btn btn-default btn-block operator">+</button>
@@ -64,7 +101,7 @@
                             <button type="button" class="btn btn-default">6</button>
                         </div>
                         <div class="col-md-4">
-                            <button type="button" class="btn btn-default btn-block operator">X</button>
+                            <button type="button" class="btn btn-default btn-block operator">x</button>
                         </div>
                     </div>
                     <div class="row">
@@ -96,15 +133,6 @@
             </div>
         </div>
     </div>
-    <!--<div class="col-md-3 col-md-offset-9 side_buttons">
-        <div class="btn-group-vertical" role="group">
-            <button type="button" class="btn btn-default btn-block">+</button>
-            <button type="button" class="btn btn-default btn-block">-</button>
-            <button type="button" class="btn btn-default btn-block">X</button>
-            <button type="button" class="btn btn-default btn-block">/</button>
-        </div>
-    </div>
-</div> -->
 </div>
 </body>
 </html>
