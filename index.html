@@ -20,6 +20,50 @@
     <link type="text/css" href="style.css" rel="stylesheet">
     <script src="http://Learning-Fuze.github.io/calculator/calculator.js"></script>
     <script>
+        var justclicked;
+        var firstclick;
+        var secondclick;
+
+        $(document).ready(function(){
+            $('button').click(function(){
+                console.log('click handler works');
+                justclicked=this.outerText;
+                buttonClicked();
+            });
+
+        });
+
+        function buttonClicked(){
+            console.log('buttonClicked function works');
+            console.log('justclicked = ', justclicked);
+            console.log(typeof firstclick);
+            if (typeof firstclick =='undefined') {
+                firstclick = justclicked;
+            }
+            else {
+                secondclick = justclicked;
+            }
+            console.log('firstclick = ', firstclick,typeof firstclick, 'secondclick = ', secondclick, typeof secondclick);
+            if (typeof firstclick=='string' && typeof secondclick =='string') {
+                parseInt(firstclick);
+                parseInt(secondclick);
+                console.log(typeof firstclick, typeof secondclick);
+                if (typeof firstclick =='number' && typeof secondclick =='number') {
+                    firstclick=firstclick + '' + secondclick;
+                    parseInt(firstclick);
+                    secondclick='';
+                }
+                console.log('firstclick = ', firstclick,typeof firstclick, 'secondclick = ', secondclick, typeof secondclick);
+            }
+
+            /*console.log('firstclick = ', firstclick);
+            console.log(typeof firstclick);
+            firstclick = parseInt(firstclick);
+            console.log(typeof firstclick);
+            if (typeof firstclick !== 'undefined') {
+
+            } */
+        }
 
         function callback(type, value, item) {
             console.log('type: ', type, ' value: ', value, ' item: ', item);
