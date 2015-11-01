@@ -23,47 +23,83 @@
         var justclicked;
         var firstclick;
         var secondclick;
+        var output_array = [];
 
-        $(document).ready(function(){
-            $('button').click(function(){
-                console.log('click handler works');
-                justclicked=this.outerText;
+        $(document).ready(function () {
+            $('button').click(function () {
+                justclicked = this.outerText;
                 buttonClicked();
             });
 
         });
 
-        function buttonClicked(){
-            console.log('buttonClicked function works');
+        function buttonClicked() {
             console.log('justclicked = ', justclicked);
-            console.log(typeof firstclick);
-            if (typeof firstclick =='undefined') {
+            if (typeof firstclick == 'undefined') {
                 firstclick = justclicked;
             }
             else {
                 secondclick = justclicked;
             }
-            console.log('firstclick = ', firstclick,typeof firstclick, 'secondclick = ', secondclick, typeof secondclick);
-            if (typeof firstclick=='string' && typeof secondclick =='string') {
-                parseInt(firstclick);
-                parseInt(secondclick);
-                console.log(typeof firstclick, typeof secondclick);
-                if (typeof firstclick =='number' && typeof secondclick =='number') {
-                    firstclick=firstclick + '' + secondclick;
-                    parseInt(firstclick);
-                    secondclick='';
+            if (typeof firstclick == 'string' && typeof secondclick == 'string') {
+                console.log('firstclick parseint = ',parseInt(firstclick), ' secondclick parseint = ', parseInt(secondclick));
+                if (Math.abs(parseInt(firstclick)) >=0 && Math.abs(parseInt(secondclick)) >=0) {
+                    firstclick = parseInt(firstclick);
+                    secondclick = parseInt(secondclick);
+                    firstclick = firstclick + '' + secondclick;
+                    secondclick = '';
                 }
-                console.log('firstclick = ', firstclick,typeof firstclick, 'secondclick = ', secondclick, typeof secondclick);
+                else {
+                    console.log('an operator was clicked');
+                    var firstnumber = new output_number(firstclick, typeof firstclick);
+                    output_array.push(firstnumber);
+                    switch (secondclick) {
+                        case '+':
+                            var addition = new output_operator(secondclick, typeof secondclick);
+                            output_array.push(addition);
+                            console.log(output_array);
+                            firstclick='';
+                            secondclick='';
+                            break;
+                        case '-':
+                            var subtraction = new output_operator(secondclick, typeof secondclick);
+                            output_array.push(subtraction);
+                            console.log(output_array);
+                            firstclick='';
+                            secondclick='';
+                            break;
+                        case 'x':
+                            var multiplication = new output_operator(secondclick, typeof secondclick);
+                            output_array.push(multiplication);
+                            console.log(output_array);
+                            firstclick='';
+                            secondclick='';
+                            break;
+                        case '/':
+                            var division = new output_operator(secondclick, typeof secondclick);
+                            output_array.push(division);
+                            console.log(output_array);
+                            firstclick='';
+                            secondclick='';
+                            break;
+
+                    }
+                }
             }
 
-            /*console.log('firstclick = ', firstclick);
-            console.log(typeof firstclick);
-            firstclick = parseInt(firstclick);
-            console.log(typeof firstclick);
-            if (typeof firstclick !== 'undefined') {
 
-            } */
         }
+
+        function output_number(value, type) {
+            this.value = value;
+            this.type = type;
+        }
+
+        function output_operator(value, type) {
+            this.value = value;
+            this.type=type;
+        }
+
 
         function callback(type, value, item) {
             console.log('type: ', type, ' value: ', value, ' item: ', item);
