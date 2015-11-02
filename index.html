@@ -21,13 +21,18 @@
     <script src="http://Learning-Fuze.github.io/calculator/calculator.js"></script>
     <script>
         var justclicked;
+        var buttontype;
         var firstclick;
+        var firstclick_filled = false;
         var secondclick;
+        var decimal_clicked = false;
         var output_array = [];
 
         $(document).ready(function () {
             $('button').click(function () {
                 justclicked = this.outerText;
+                buttontype = this.name;
+                buttonselector();
                 buttonClicked();
             });
 
@@ -36,72 +41,97 @@
         function buttonClicked() {
             console.log('justclicked = ', justclicked);
             if (typeof firstclick == 'undefined') {
-                firstclick = justclicked;
+                if (buttontype == 'number') {
+                    firstclick = justclicked;
+                    firstclick_filled = true;
+                }
+                else if (buttontype == 'decimal') {
+                    firstclick = justclicked;
+                    decimal_clicked = true;
+                    firstclick_filled = true;
+                }
+                console.log('firstclick value = ' + firstclick);
+                console.log('The decimal has been clicked? ' + decimal_clicked);
+                console.log('The first click position has been filled? ' + firstclick_filled);
             }
             else {
                 secondclick = justclicked;
             }
-            if (typeof firstclick == 'string' && typeof secondclick == 'string') {
-                console.log('firstclick parseint = ', parseInt(firstclick), ' secondclick parseint = ', parseInt(secondclick));
-                if (Math.abs(parseInt(firstclick)) >= 0 && Math.abs(parseInt(secondclick)) >= 0) {
-                    firstclick = parseInt(firstclick);
-                    secondclick = parseInt(secondclick);
-                    firstclick = firstclick + '' + secondclick;
-                    secondclick = '';
-                }
-                else {
-                    console.log('a non number was clicked');
-                    var firstnumber = new output_number(firstclick, typeof firstclick);
-                    output_array.push(firstnumber);
-                    switch (secondclick) {
-                        case '+':
-                            evaluate();
-                            var addition = new output_operator(secondclick, typeof secondclick);
-                            output_array.push(addition);
-                            console.log(output_array);
-                            firstclick = undefined;
-                            secondclick = undefined;
-                            break;
-                        case '-':
-                            evaluate();
-                            var subtraction = new output_operator(secondclick, typeof secondclick);
-                            output_array.push(subtraction);
-                            console.log(output_array);
-                            firstclick = undefined;
-                            secondclick = undefined;
-                            break;
-                        case 'x':
-                            evaluate();
-                            var multiplication = new output_operator('*', typeof secondclick);
-                            output_array.push(multiplication);
-                            console.log(output_array);
-                            firstclick = undefined;
-                            secondclick = undefined;
-                            break;
-                        case '/':
-                            evaluate();
-                            var division = new output_operator(secondclick, typeof secondclick);
-                            output_array.push(division);
-                            console.log(output_array);
-                            firstclick = undefined;
-                            secondclick = undefined;
-                            break;
-                        case '=':
-                            evaluate();
-                            break;
-                        case 'AC':
-                            output_array = [];
-                            console.log(output_array);
-                            break;
-                        /*case 'C':
-                         console.log('is clear working');
-                         output_array.pop();
-                         console.log(output_array);
-                         break;*/
-
-                    }
-                }
+            if ((firstclick_filled == true) && (buttontype == 'number')) {
+                firstclick = parseFloat(firstclick + '' +secondclick);
+                secondclick = '';
+                console.log('the value of firstclick is now: ', firstclick, ' and the value of second click is now: ', secondclick);
             }
+            if((firstclick_filled ==true) && (buttontype== 'decimal')) {
+                 console.log('decimal trial: '+ parseInt(firstclick) + '.');
+                firstclick = parseFloat(firstclick) + '' + secondclick;
+                secondclick = '';
+                console.log('the value of firstclick is now: ', firstclick,' the typeof firstclick is: ', typeof firstclick, ' and the value of second click is now: ', secondclick);
+            }
+
+
+            /*
+             if (typeof firstclick == 'string' && typeof secondclick == 'string') {
+             console.log('firstclick parseint = ', parseInt(firstclick), ' secondclick parseint = ', parseInt(secondclick));
+             if (Math.abs(parseInt(firstclick)) >= 0 && Math.abs(parseInt(secondclick)) >= 0) {
+             firstclick = parseInt(firstclick);
+             secondclick = parseInt(secondclick);
+             firstclick = firstclick + '' + secondclick;
+             secondclick = '';
+             }
+             else {
+             console.log('a non number was clicked');
+             var firstnumber = new output_number(firstclick, typeof firstclick);
+             output_array.push(firstnumber);
+             switch (secondclick) {
+             case '+':
+             evaluate();
+             var addition = new output_operator(secondclick, typeof secondclick);
+             output_array.push(addition);
+             console.log(output_array);
+             firstclick = undefined;
+             secondclick = undefined;
+             break;
+             case '-':
+             evaluate();
+             var subtraction = new output_operator(secondclick, typeof secondclick);
+             output_array.push(subtraction);
+             console.log(output_array);
+             firstclick = undefined;
+             secondclick = undefined;
+             break;
+             case 'x':
+             evaluate();
+             var multiplication = new output_operator('*', typeof secondclick);
+             output_array.push(multiplication);
+             console.log(output_array);
+             firstclick = undefined;
+             secondclick = undefined;
+             break;
+             case '/':
+             evaluate();
+             var division = new output_operator(secondclick, typeof secondclick);
+             output_array.push(division);
+             console.log(output_array);
+             firstclick = undefined;
+             secondclick = undefined;
+             break;
+             case '=':
+             evaluate();
+             break;
+             case 'AC':
+             output_array = [];
+             console.log(output_array);
+             break;
+             /*case 'C':
+             console.log('is clear working');
+             output_array.pop();
+             console.log(output_array);
+             break;*/
+
+            /*  }
+             }
+             } */
 
         }
 
@@ -132,6 +162,12 @@
             console.log(evaluated);
             output_array.splice(0, 3, evaluated);
             console.log(output_array);
+        }
+
+        function buttonselector() {
+            console.log('the type of button you selected is: ' + buttontype);
+
+
         }
 
         function clearthis() {
@@ -187,66 +223,66 @@
                 <div class="col-md-12 center_buttons_container">
                     <div class="row top">
                         <div class="col-md-3">
-                            <button type="button" class="btn btn-default clear" onclick="clearthis()">C</button>
+                            <button type="button" class="btn btn-default" name="clear">C</button>
                         </div>
                         <div class="col-md-3">
-                            <button type="button" class="btn btn-default clear">AC</button>
+                            <button type="button" class="btn btn-default" name="all_clear">AC</button>
                         </div>
                         <div class="col-md-4">
-                            <button type="button" class="btn btn-default btn-block operator">+</button>
+                            <button type="button" class="btn btn-default btn-block" name="operator">+</button>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-default">7</button>
+                            <button type="button" class="btn btn-default" name="number">7</button>
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-default">8</button>
+                            <button type="button" class="btn btn-default" name="number">8</button>
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-default">9</button>
+                            <button type="button" class="btn btn-default" name="number">9</button>
                         </div>
                         <div class="col-md-4">
-                            <button type="button" class="btn btn-default btn-block operator">-</button>
+                            <button type="button" class="btn btn-default btn-block" name="operator">-</button>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-default">4</button>
+                            <button type="button" class="btn btn-default" name="number">4</button>
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-default">5</button>
+                            <button type="button" class="btn btn-default" name="number">5</button>
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-default">6</button>
+                            <button type="button" class="btn btn-default" name="number">6</button>
                         </div>
                         <div class="col-md-4">
-                            <button type="button" class="btn btn-default btn-block operator">x</button>
+                            <button type="button" class="btn btn-default btn-block" name="operator">x</button>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-default">1</button>
+                            <button type="button" class="btn btn-default" name="number">1</button>
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-default">2</button>
+                            <button type="button" class="btn btn-default" name="number">2</button>
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-default">3</button>
+                            <button type="button" class="btn btn-default" name="number">3</button>
                         </div>
                         <div class="col-md-4">
-                            <button type="button" class="btn btn-default btn-block operator">/</button>
+                            <button type="button" class="btn btn-default btn-block" name="operator">/</button>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-default">0</button>
+                            <button type="button" class="btn btn-default" name="number">0</button>
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-default">.</button>
+                            <button type="button" class="btn btn-default" name="decimal">.</button>
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-default equals">=</button>
+                            <button type="button" class="btn btn-default" name="equals">=</button>
                         </div>
                     </div>
                 </div>
