@@ -42,51 +42,60 @@
                 secondclick = justclicked;
             }
             if (typeof firstclick == 'string' && typeof secondclick == 'string') {
-                console.log('firstclick parseint = ',parseInt(firstclick), ' secondclick parseint = ', parseInt(secondclick));
-                if (Math.abs(parseInt(firstclick)) >=0 && Math.abs(parseInt(secondclick)) >=0) {
+                console.log('firstclick parseint = ', parseInt(firstclick), ' secondclick parseint = ', parseInt(secondclick));
+                if (Math.abs(parseInt(firstclick)) >= 0 && Math.abs(parseInt(secondclick)) >= 0) {
                     firstclick = parseInt(firstclick);
                     secondclick = parseInt(secondclick);
                     firstclick = firstclick + '' + secondclick;
                     secondclick = '';
                 }
                 else {
-                    console.log('an operator was clicked');
+                    console.log('a non number was clicked');
                     var firstnumber = new output_number(firstclick, typeof firstclick);
                     output_array.push(firstnumber);
+                    evaluate();
                     switch (secondclick) {
                         case '+':
                             var addition = new output_operator(secondclick, typeof secondclick);
                             output_array.push(addition);
                             console.log(output_array);
-                            firstclick='';
-                            secondclick='';
+                            firstclick = undefined;
+                            secondclick = undefined;
                             break;
                         case '-':
                             var subtraction = new output_operator(secondclick, typeof secondclick);
                             output_array.push(subtraction);
                             console.log(output_array);
-                            firstclick='';
-                            secondclick='';
+                            firstclick = undefined;
+                            secondclick = undefined;
                             break;
                         case 'x':
                             var multiplication = new output_operator(secondclick, typeof secondclick);
                             output_array.push(multiplication);
                             console.log(output_array);
-                            firstclick='';
-                            secondclick='';
+                            firstclick = undefined;
+                            secondclick = undefined;
                             break;
                         case '/':
                             var division = new output_operator(secondclick, typeof secondclick);
                             output_array.push(division);
                             console.log(output_array);
-                            firstclick='';
-                            secondclick='';
+                            firstclick = undefined;
+                            secondclick = undefined;
+                            break;
+                        case '=':
+                            console.log('the calculate function will go here');
+                            break;
+                        case 'c':
+                            console.log('the clear function will go here');
+                            break;
+                        case 'AC':
+                            console.log('the all clear function will go here');
                             break;
 
                     }
                 }
             }
-
 
         }
 
@@ -97,7 +106,26 @@
 
         function output_operator(value, type) {
             this.value = value;
-            this.type=type;
+            this.type = type;
+        }
+
+        function evaluate() {
+            var evaluation = '';
+            for (var i = 0; i < output_array.length; i++) {
+                console.log(output_array[i].value);
+                if (Math.abs(parseInt(output_array[i].value)) >= 0) {
+                    evaluation += parseInt(output_array[i].value);
+                }
+                else {
+                    evaluation += output_array[i].value;
+                }
+            }
+            console.log(evaluation);
+            evaluation = (eval(evaluation));
+            var evaluated = new output_number(evaluation, typeof evaluation);
+            console.log(evaluated);
+            output_array.splice(0,3,evaluated);
+            console.log(output_array);
         }
 
 
