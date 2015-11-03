@@ -28,58 +28,99 @@
         var secondclick_filled = false;
         var decimal_clicked = false;
         var output_array = [];
+        var objectsInArray = false;
+        var currentlyequal;
 
         $(document).ready(function () {
             $('button').click(function () {
                 justclicked = this.outerText;
                 buttontype = this.name;
                 buttonselector();
-                buttonClicked();
-                evaluate_array();
+                areThereObjectsInTheArray();
+                //evaluate_array();
             });
 
         });
 
         function buttonClicked() {
-            console.log('justclicked = ', justclicked);
+            console.log('You just clicked = ', justclicked);
             if (typeof firstclick == 'undefined') {
-                if (buttontype == 'number') {
+                if (objectsInArray == false) {
+                    if (buttontype == 'number') {
+                        firstclick = justclicked;
+                        firstclick_filled = true;
+                    }
+                    else if (buttontype == 'decimal') {
+                        firstclick = '0' + '' + justclicked;
+                        decimal_clicked = true;
+                        firstclick_filled = true;
+                    }
+
+                }
+                if (objectsInArray == true) {
+                    if (buttontype == 'number') {
+                        firstclick = justclicked;
+                        firstclick_filled = true;
+                    }
+                    else if (buttontype == 'decimal') {
+                        firstclick = '0' + '' + justclicked;
+                        decimal_clicked = true;
+                        firstclick_filled = true;
+                    }
+                    else if (buttontype == 'operator') {
+                        firstclick = justclicked;
+                        firstclick_filled = true;
+                        var protoStore;
+                        var protoStoreName;
+                        var indexToAdd = output_array.length - 1;
+                        protoStore = Object.getPrototypeOf(output_array[output_array.length - 1]);
+                        protoStoreName = protoStore.constructor.name;
+                        var anotherOperator = new output_operator(firstclick, typeof firstclick);
+                        if (protoStoreName == "output_operator") {
+                            output_array.splice(indexToAdd, 1, anotherOperator);
+                            console.log(output_array);
+                        }
+                        else {
+                            output_array.push(anotherOperator);
+                            console.log(output_array);
+                        }
+                    }
+                    /*firstclick = undefined;
+                     firstclick_filled = false;*/
+                }
+                else {
                     firstclick = justclicked;
                     firstclick_filled = true;
                 }
-                else if (buttontype == 'decimal') {
-                    firstclick = '0' + '' + justclicked;
-                    console.log(firstclick);
-                    decimal_clicked = true;
-                    firstclick_filled = true;
-                }
-                console.log('firstclick value = ' + firstclick);
-                console.log('The decimal has been clicked? ' + decimal_clicked);
-                console.log('The first click position has been filled? ' + firstclick_filled);
             }
             else {
                 secondclick = justclicked;
                 secondclick_filled = true;
+
             }
-            if ((firstclick_filled == true) && (secondclick_filled == true) && (buttontype == 'number')) {
+            if ((firstclick_filled) && (secondclick_filled) && (buttontype == 'number')) {
                 firstclick = parseFloat(firstclick + '' + secondclick);
-                secondclick = '';
-                console.log('the value of firstclick is now: ', firstclick, ' and the value of second click is now: ', secondclick);
+                secondclick = undefined;
+                //console.log('the value of firstclick is now: ', firstclick, ' and the value of second click is now: ', secondclick);
             }
-            if ((firstclick_filled == true) && (secondclick_filled == true) && (buttontype == 'decimal')) {
-                firstclick = parseFloat(firstclick) + '' + secondclick;
-                secondclick = '';
-                decimal_clicked = true;
-                console.log('the value of firstclick is now: ', firstclick, ' the typeof firstclick is: ', typeof firstclick, ' and the value of second click is now: ', secondclick);
+            if ((firstclick_filled) && (secondclick_filled) && (buttontype == 'decimal')) {
+                if (decimal_clicked == false) {
+                    firstclick = parseFloat(firstclick) + '' + secondclick;
+                    secondclick = '';
+                    decimal_clicked = true;
+                    //console.log('the value of firstclick is now: ', firstclick, ' the typeof firstclick is: ', typeof firstclick, ' and the value of second click is now: ', secondclick);
+                }
             }
+
             if ((firstclick_filled == true) && (secondclick_filled == true) && (buttontype == 'operator')) {
-                console.log('an operator was clicked');
+                //console.log('an operator was clicked');
                 firstclick = parseFloat(firstclick);
                 var first_output_number = new output_number(firstclick, typeof firstclick);
                 output_array.push(first_output_number);
+                decimal_clicked = false;
                 var first_operator = new output_operator(secondclick, typeof secondclick);
                 output_array.push(first_operator);
-                console.log(output_array);
+                //console.log(output_array);
                 clearclicks();
 
             }
@@ -115,10 +156,9 @@
         }
 
         function evaluate_array() {
-            if (output_array.length == 4) {
                 var the_operator = output_array[1].value;
                 var value;
-                console.log('the operator = ', the_operator);
+                //console.log('the operator = ', the_operator);
                 switch (the_operator) {
                     case '+':
                         value = parseFloat(output_array[1].addition());
@@ -126,6 +166,7 @@
                         console.log(addition_evaluation);
                         output_array.splice(0, 3, addition_evaluation);
                         console.log(output_array);
+                        currentlyequal = output_array[0].value;
                         break;
                     case '-':
                         value = parseFloat(output_array[1].subtraction());
@@ -133,6 +174,7 @@
                         console.log(subtraction_evaluation);
                         output_array.splice(0, 3, subtraction_evaluation);
                         console.log(output_array);
+                        currentlyequal = output_array[0].value;
                         break;
                     case 'x':
                         value = parseFloat(output_array[1].multiplication());
@@ -140,6 +182,7 @@
                         console.log(multiplication_evaluation);
                         output_array.splice(0, 3, multiplication_evaluation);
                         console.log(output_array);
+                        currentlyequal = output_array[0].value;
                         break;
                     case '/':
                         value = parseFloat(output_array[1].division());
@@ -147,29 +190,57 @@
                         console.log(division_evaluation);
                         output_array.splice(0, 3, division_evaluation);
                         console.log(output_array);
+                        currentlyequal = output_array[0].value;
                         break;
 
 
                 }
             }
-        }
+
+
 
 
         function buttonselector() {
             console.log('the type of button you selected is: ' + buttontype);
+            switch (buttontype) {
+                case 'clear':
+                    clearthis();
+                    //console.log('clear this function');
+                    break;
+                case 'all_clear':
+                    allclear();
+                    //console.log('all clear function');
+                    break;
+                case 'equals':
+                    equals();
+                    //console.log('equals function');
+                    break;
+                default:
+                    buttonClicked();
+                    //console.log('button clicked function');
+                    break;
+            }
+
         }
 
         function allclear() {
             output_array = [];
+            objectsInArray = false;
             clearclicks();
-            console.log(output_array);
+            //console.log(output_array);
+        }
+
+        function areThereObjectsInTheArray() {
+            if (output_array.length > 0) {
+                objectsInArray = true;
+            }
+            //console.log('there are objects in the array');
         }
 
         function clearthis() {
-            console.log('is clear working');
             output_array.pop();
             clearclicks();
-            console.log(output_array);
+            console.log('now the array looks like: ',output_array);
         }
 
         function clearclicks() {
@@ -183,60 +254,59 @@
         }
 
         function equals() {
-            console.log('the equals button has been pressed');
-            console.log('the output array currently holds ' + output_array.length + ' objects');
-            console.log(output_array);
-            var storestring;
+            //console.log('the equals button has been pressed');
+            secondclick = '=';
+            var outputString= '';
+            //console.log('the output array currently holds ' + output_array.length + ' objects');
+            //console.log('current output_array: ', output_array);
+            //console.log('current first click: ', firstclick);
+            //console.log('current second click: ', secondclick);
             switch (output_array.length) {
                 case 0:
-                    console.log('nothing is in the array yet. Need to check the value of firstclick');
-                    if (Math.abs(parseFloat(firstclick)) >= 0) {
-                        firstclick = parseFloat(firstclick);
-                        var aNumber = new output_number(firstclick, typeof firstclick);
-                        output_array.push(aNumber);
-                        console.log(output_array);
-                    }
-                    else if (firstclick == '0.') {
-                        firstclick = parseFloat(firstclick);
-                        var decimalNumber = new output_number(firstclick, typeof firstclick);
-                        output_array.push(decimalNumber);
-                        console.log(output_array);
-                    }
-                    else {
-                        console.log('the value of firstclick only takes numbers and decimals so this message should never appear');
-                    }
+                    checkFirstClickAndPush();
+                    console.log('the final value is: ', output_array[0].value);
                     break;
                 case 1:
                     console.log('for this to happen, someone had to pop the operator. I think');
                     console.log('the final value is: ', output_array[0].value);
-                )
                     break;
                 case 2:
-                    console.log('need to check the value of firstclick to see if it should be pushed to the array or not');
-                    if (Math.abs(parseFloat(firstclick)) >= 0) {
-                        firstclick = parseFloat(firstclick);
-                        var secondnumber = new output_number(firstclick, typeof firstclick);
-                        output_array.push(secondnumber);
-                        console.log(output_array);
-                        storestring = output_array[1].value + '' + output_array[2].value;
-                        console.log('storing this string ', storestring, ' just incase the user clicks on equals again');
-                        var pushedequals = new equals_operator(secondclick, typeof secondclick);
-                        output_array.push(pushedequals);
-                        console.log(output_array);
-                        clearclicks();
-                    }
+                    checkFirstClickAndPush();
+                    //evaluate_array();
+                    console.log(output_array);
                     break;
                 case 3:
                     console.log('Someone must have pushed 2 operators');
                     break;
             }
+            var pushedequals = new equals_operator(secondclick, typeof secondclick);
+            output_array.push(pushedequals);
+            console.log('after clicking the equals button, the output array looks like: ', output_array);
+            for(var i=0; i<output_array.length; i++) {
+                console.log(output_array[i].value);
+                outputString += output_array[i].value;
+            }
+console.log(outputString);
+        }
 
-
+        function checkFirstClickAndPush() {
+            if (Math.abs(parseFloat(firstclick)) >= 0) {
+                firstclick = parseFloat(firstclick);
+                var aNumber = new output_number(firstclick, typeof firstclick);
+                output_array.push(aNumber);
+                //console.log(output_array);
+            }
+            else if (firstclick == '0.') {
+                firstclick = parseFloat(firstclick);
+                var decimalNumber = new output_number(firstclick, typeof firstclick);
+                output_array.push(decimalNumber);
+                //console.log(output_array);
+            }
         }
 
 
         function callback(type, value, item) {
-            console.log('type: ', type, ' value: ', value, ' item: ', item);
+            //console.log('type: ', type, ' value: ', value, ' item: ', item);
             switch (value) {
                 case undefined:
                     $('#display_area').html('');
@@ -263,7 +333,7 @@
                         my_calculator.addItem($(this).text());
                         break;
                 }
-                console.log(val, my_calculator);
+                //console.log(val, my_calculator);
             });
         })
 
@@ -281,10 +351,10 @@
                 <div class="col-md-12 center_buttons_container">
                     <div class="row top">
                         <div class="col-md-3">
-                            <button type="button" class="btn btn-default" name="clear" onclick="clearthis()">C</button>
+                            <button type="button" class="btn btn-default" name="clear">C</button>
                         </div>
                         <div class="col-md-3">
-                            <button type="button" class="btn btn-default" name="all_clear" onclick="allclear()">AC
+                            <button type="button" class="btn btn-default" name="all_clear">AC
                             </button>
                         </div>
                         <div class="col-md-4">
@@ -338,10 +408,10 @@
                             <button type="button" class="btn btn-default" name="number">0</button>
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-default" name="decimal">.</button>
+                            <button type="button" class="btn btn-default" id="decimal" name="decimal">.</button>
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-default" name="equals" onclick="equals()">=</button>
+                            <button type="button" class="btn btn-default" name="equals">=</button>
                         </div>
                     </div>
                 </div>
