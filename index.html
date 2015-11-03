@@ -35,6 +35,7 @@
                 buttontype = this.name;
                 buttonselector();
                 buttonClicked();
+                evaluate_array();
             });
 
         });
@@ -47,7 +48,7 @@
                     firstclick_filled = true;
                 }
                 else if (buttontype == 'decimal') {
-                    firstclick = ''+ justclicked;
+                    firstclick = '' + justclicked;
                     console.log(firstclick);
                     decimal_clicked = true;
                     firstclick_filled = true;
@@ -60,81 +61,29 @@
                 secondclick = justclicked;
                 secondclick_filled = true;
             }
-            if ((firstclick_filled == true) && (secondclick_filled==true) && (buttontype == 'number')) {
-                firstclick = parseFloat(firstclick + '' +secondclick);
+            if ((firstclick_filled == true) && (secondclick_filled == true) && (buttontype == 'number')) {
+                firstclick = parseFloat(firstclick + '' + secondclick);
                 secondclick = '';
                 console.log('the value of firstclick is now: ', firstclick, ' and the value of second click is now: ', secondclick);
             }
-            if((firstclick_filled ==true) &&(secondclick_filled==true) && (buttontype== 'decimal')) {
+            if ((firstclick_filled == true) && (secondclick_filled == true) && (buttontype == 'decimal')) {
                 firstclick = parseFloat(firstclick) + '' + secondclick;
                 secondclick = '';
                 decimal_clicked = true;
-                console.log('the value of firstclick is now: ', firstclick,' the typeof firstclick is: ', typeof firstclick, ' and the value of second click is now: ', secondclick);
+                console.log('the value of firstclick is now: ', firstclick, ' the typeof firstclick is: ', typeof firstclick, ' and the value of second click is now: ', secondclick);
+            }
+            if ((firstclick_filled == true) && (secondclick_filled == true) && (buttontype == 'operator')) {
+                console.log('an operator was clicked');
+                firstclick = parseFloat(firstclick);
+                var first_output_number = new output_number(firstclick, typeof firstclick);
+                output_array.push(first_output_number);
+                var first_operator = new output_operator(secondclick, typeof secondclick);
+                output_array.push(first_operator);
+                console.log(output_array);
+                clearclicks();
+
             }
 
-
-            /*
-             if (typeof firstclick == 'string' && typeof secondclick == 'string') {
-             console.log('firstclick parseint = ', parseInt(firstclick), ' secondclick parseint = ', parseInt(secondclick));
-             if (Math.abs(parseInt(firstclick)) >= 0 && Math.abs(parseInt(secondclick)) >= 0) {
-             firstclick = parseInt(firstclick);
-             secondclick = parseInt(secondclick);
-             firstclick = firstclick + '' + secondclick;
-             secondclick = '';
-             }
-             else {
-             console.log('a non number was clicked');
-             var firstnumber = new output_number(firstclick, typeof firstclick);
-             output_array.push(firstnumber);
-             switch (secondclick) {
-             case '+':
-             evaluate();
-             var addition = new output_operator(secondclick, typeof secondclick);
-             output_array.push(addition);
-             console.log(output_array);
-             firstclick = undefined;
-             secondclick = undefined;
-             break;
-             case '-':
-             evaluate();
-             var subtraction = new output_operator(secondclick, typeof secondclick);
-             output_array.push(subtraction);
-             console.log(output_array);
-             firstclick = undefined;
-             secondclick = undefined;
-             break;
-             case 'x':
-             evaluate();
-             var multiplication = new output_operator('*', typeof secondclick);
-             output_array.push(multiplication);
-             console.log(output_array);
-             firstclick = undefined;
-             secondclick = undefined;
-             break;
-             case '/':
-             evaluate();
-             var division = new output_operator(secondclick, typeof secondclick);
-             output_array.push(division);
-             console.log(output_array);
-             firstclick = undefined;
-             secondclick = undefined;
-             break;
-             case '=':
-             evaluate();
-             break;
-             case 'AC':
-             output_array = [];
-             console.log(output_array);
-             break;
-             /*case 'C':
-             console.log('is clear working');
-             output_array.pop();
-             console.log(output_array);
-             break;*/
-
-            /*  }
-             }
-             } */
 
         }
 
@@ -146,37 +95,86 @@
         function output_operator(value, type) {
             this.value = value;
             this.type = type;
+            this.addition = function () {
+                return (output_array[0].value + output_array[2].value);
+            };
+            this.subtraction = function () {
+                return (output_array[0].value - output_array[2].value);
+            };
+            this.multiplication = function () {
+                return (output_array[0].value * output_array[2].value);
+            };
+            this.division = function () {
+                return (output_array[0].value / output_array[2].value);
+            }
         }
 
-        function evaluate() {
-            var evaluation = '';
-            for (var i = 0; i < output_array.length; i++) {
-                console.log(output_array[i].value);
-                if (Math.abs(parseInt(output_array[i].value)) >= 0) {
-                    evaluation += parseInt(output_array[i].value);
-                }
-                else {
-                    evaluation += output_array[i].value;
+        function evaluate_array() {
+            if (output_array.length == 4) {
+                var the_operator = output_array[1].value;
+                var value;
+                console.log('the operator = ', the_operator);
+                switch (the_operator) {
+                    case '+':
+                        value = parseFloat(output_array[1].addition());
+                        var addition_evaluation = new output_number(value, typeof value);
+                        console.log(addition_evaluation);
+                        output_array.splice(0, 3, addition_evaluation);
+                        console.log(output_array);
+                        break;
+                    case '-':
+                        value = parseFloat(output_array[1].subtraction());
+                        var subtraction_evaluation = new output_number(value, typeof value);
+                        console.log(subtraction_evaluation);
+                        output_array.splice(0, 3, subtraction_evaluation);
+                        console.log(output_array);
+                        break;
+                    case 'x':
+                        value = parseFloat(output_array[1].multiplication());
+                        var multiplication_evaluation = new output_number(value, typeof value);
+                        console.log(multiplication_evaluation);
+                        output_array.splice(0, 3, multiplication_evaluation);
+                        console.log(output_array);
+                        break;
+                    case '/':
+                        value = parseFloat(output_array[1].division());
+                        var division_evaluation = new output_number(value, typeof value);
+                        console.log(division_evaluation);
+                        output_array.splice(0, 3, division_evaluation);
+                        console.log(output_array);
+                        break;
+
+
                 }
             }
-            console.log(evaluation);
-            evaluation = (eval(evaluation));
-            var evaluated = new output_number(evaluation, typeof evaluation);
-            console.log(evaluated);
-            output_array.splice(0, 3, evaluated);
-            console.log(output_array);
         }
+
 
         function buttonselector() {
             console.log('the type of button you selected is: ' + buttontype);
+        }
 
-
+        function allclear() {
+            output_array = [];
+            clearclicks();
+            console.log(output_array);
         }
 
         function clearthis() {
             console.log('is clear working');
             output_array.pop();
+            clearclicks();
             console.log(output_array);
+        }
+
+        function clearclicks() {
+            firstclick = undefined;
+            firstclick_filled = false;
+            secondclick = undefined;
+            secondclick_filled = false;
+            decimal_clicked = false;
+            justclicked = undefined;
+            buttontype = undefined;
         }
 
 
@@ -226,10 +224,11 @@
                 <div class="col-md-12 center_buttons_container">
                     <div class="row top">
                         <div class="col-md-3">
-                            <button type="button" class="btn btn-default" name="clear">C</button>
+                            <button type="button" class="btn btn-default" name="clear" onclick="clearthis()">C</button>
                         </div>
                         <div class="col-md-3">
-                            <button type="button" class="btn btn-default" name="all_clear">AC</button>
+                            <button type="button" class="btn btn-default" name="all_clear" onclick="allclear()">AC
+                            </button>
                         </div>
                         <div class="col-md-4">
                             <button type="button" class="btn btn-default btn-block" name="operator">+</button>
