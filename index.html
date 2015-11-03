@@ -48,7 +48,7 @@
                     firstclick_filled = true;
                 }
                 else if (buttontype == 'decimal') {
-                    firstclick = '' + justclicked;
+                    firstclick = '0' + '' + justclicked;
                     console.log(firstclick);
                     decimal_clicked = true;
                     firstclick_filled = true;
@@ -107,6 +107,11 @@
             this.division = function () {
                 return (output_array[0].value / output_array[2].value);
             }
+        }
+
+        function equals_operator(value, type) {
+            this.value = value;
+            this.type = type;
         }
 
         function evaluate_array() {
@@ -175,6 +180,58 @@
             decimal_clicked = false;
             justclicked = undefined;
             buttontype = undefined;
+        }
+
+        function equals() {
+            console.log('the equals button has been pressed');
+            console.log('the output array currently holds ' + output_array.length + ' objects');
+            console.log(output_array);
+            var storestring;
+            switch (output_array.length) {
+                case 0:
+                    console.log('nothing is in the array yet. Need to check the value of firstclick');
+                    if (Math.abs(parseFloat(firstclick)) >= 0) {
+                        firstclick = parseFloat(firstclick);
+                        var aNumber = new output_number(firstclick, typeof firstclick);
+                        output_array.push(aNumber);
+                        console.log(output_array);
+                    }
+                    else if (firstclick == '0.') {
+                        firstclick = parseFloat(firstclick);
+                        var decimalNumber = new output_number(firstclick, typeof firstclick);
+                        output_array.push(decimalNumber);
+                        console.log(output_array);
+                    }
+                    else {
+                        console.log('the value of firstclick only takes numbers and decimals so this message should never appear');
+                    }
+                    break;
+                case 1:
+                    console.log('for this to happen, someone had to pop the operator. I think');
+                    console.log('the final value is: ', output_array[0].value);
+                )
+                    break;
+                case 2:
+                    console.log('need to check the value of firstclick to see if it should be pushed to the array or not');
+                    if (Math.abs(parseFloat(firstclick)) >= 0) {
+                        firstclick = parseFloat(firstclick);
+                        var secondnumber = new output_number(firstclick, typeof firstclick);
+                        output_array.push(secondnumber);
+                        console.log(output_array);
+                        storestring = output_array[1].value + '' + output_array[2].value;
+                        console.log('storing this string ', storestring, ' just incase the user clicks on equals again');
+                        var pushedequals = new equals_operator(secondclick, typeof secondclick);
+                        output_array.push(pushedequals);
+                        console.log(output_array);
+                        clearclicks();
+                    }
+                    break;
+                case 3:
+                    console.log('Someone must have pushed 2 operators');
+                    break;
+            }
+
+
         }
 
 
@@ -284,7 +341,7 @@
                             <button type="button" class="btn btn-default" name="decimal">.</button>
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-default" name="equals">=</button>
+                            <button type="button" class="btn btn-default" name="equals" onclick="equals()">=</button>
                         </div>
                     </div>
                 </div>
