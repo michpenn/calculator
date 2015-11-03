@@ -25,6 +25,7 @@
         var firstclick;
         var firstclick_filled = false;
         var secondclick;
+        var secondclick_filled = false;
         var decimal_clicked = false;
         var output_array = [];
 
@@ -46,7 +47,8 @@
                     firstclick_filled = true;
                 }
                 else if (buttontype == 'decimal') {
-                    firstclick = justclicked;
+                    firstclick = ''+ justclicked;
+                    console.log(firstclick);
                     decimal_clicked = true;
                     firstclick_filled = true;
                 }
@@ -56,16 +58,17 @@
             }
             else {
                 secondclick = justclicked;
+                secondclick_filled = true;
             }
-            if ((firstclick_filled == true) && (buttontype == 'number')) {
+            if ((firstclick_filled == true) && (secondclick_filled==true) && (buttontype == 'number')) {
                 firstclick = parseFloat(firstclick + '' +secondclick);
                 secondclick = '';
                 console.log('the value of firstclick is now: ', firstclick, ' and the value of second click is now: ', secondclick);
             }
-            if((firstclick_filled ==true) && (buttontype== 'decimal')) {
-                 console.log('decimal trial: '+ parseInt(firstclick) + '.');
+            if((firstclick_filled ==true) &&(secondclick_filled==true) && (buttontype== 'decimal')) {
                 firstclick = parseFloat(firstclick) + '' + secondclick;
                 secondclick = '';
+                decimal_clicked = true;
                 console.log('the value of firstclick is now: ', firstclick,' the typeof firstclick is: ', typeof firstclick, ' and the value of second click is now: ', secondclick);
             }
 
