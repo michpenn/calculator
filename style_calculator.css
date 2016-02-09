@@ -1,0 +1,29 @@
+#calculator {
+    border: 3px solid black;
+    position: relative;
+    top: 50px;
+    background: lightblue;
+    box-shadow: 0 0 30px gray;
+}
+
+#display {
+    margin-top: 2%;
+    margin-bottom: 2%;
+    height: 50px;
+    border: 1px solid #bce8f1;
+    box-shadow: 0 0 10px gray;
+    text-align: right;
+    font: 20px bold;
+    color: blue;
+
+}
+
+.keys {
+ margin-bottom: 1%;
+    box-shadow: 0 0 5px gray;
+}
+
+.keys:hover {
+    background: antiquewhite;
+    font-weight: bold;
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <title>Calculator</title>
+    <!--Jquery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
+
+    <!--Individual styling -->
+    <link rel="stylesheet" type="text/css" href="style_calculator.css">
+    <script src="calculator_oop.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div id="calculator" class="text-center col-xs-offset-1 col-xs-10">
+        <form>
+            <div class="row">
+                <input type=text id="display" value="" class="col-xs-offset-1 col-xs-10">
+            </div>
+            <div class="row">
+                <input type="button" value="AC" class="keys clearAll col-xs-offset-2 col-xs-1">
+                <input type="button" value="C" class="keys clear col-xs-offset-1 col-xs-1">
+                <input type="button" value="+/-" class="keys posneg col-xs-offset-1 col-xs-1">
+                <input type="button" value="%" class="keys operator col-xs-offset-1 col-xs-1">
+            </div>
+            <div class="row">
+                <input type="button" value="7" class="keys number col-xs-offset-2 col-xs-1">
+                <input type="button" value="8" class="keys number col-xs-offset-1 col-xs-1">
+                <input type="button" value="9" class="keys number col-xs-offset-1 col-xs-1">
+                <input type="button" value="X" class="keys operator col-xs-offset-1 col-xs-1">
+            </div>
+            <div class="row">
+                <input type="button" value="4" class="keys number col-xs-offset-2 col-xs-1">
+                <input type="button" value="5" class="keys number col-xs-offset-1 col-xs-1">
+                <input type="button" value="6" class="keys number col-xs-offset-1 col-xs-1">
+                <input type="button" value="-" class="keys operator col-xs-offset-1 col-xs-1">
+            </div>
+            <div class="row">
+                <input type="button" value="1" class="keys number col-xs-offset-2 col-xs-1">
+                <input type="button" value="2" class="keys number col-xs-offset-1 col-xs-1">
+                <input type="button" value="3" class="keys number col-xs-offset-1 col-xs-1">
+                <input type="button" value="+" class="keys operator col-xs-offset-1 col-xs-1">
+            </div>
+            <div class="row">
+                <input type="button" value="0" class="keys number col-xs-offset-2 col-xs-3">
+                <input type="button" value="." class="keys decimal col-xs-offset-1 col-xs-1">
+                <input type="button" value="=" class="keys equal col-xs-offset-1 col-xs-1">
+            </div>
+
+
+        </form>
+    </div>
+</div>
+
+</body>
+<!--<script src="calculator_js.js"></script>-->
+</html>
