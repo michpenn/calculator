@@ -2,422 +2,70 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
-    <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <title>Calculator</title>
+    <!--Jquery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
-          integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"
-          integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
-            integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ=="
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
             crossorigin="anonymous"></script>
-    <link type="text/css" href="style.css" rel="stylesheet">
-    <script src="http://Learning-Fuze.github.io/calculator/calculator.js"></script>
-    <script>
-        var justclicked;
-        var buttontype;
-        var firstclick;
-        var firstclick_filled = false;
-        var secondclick;
-        var secondclick_filled = false;
-        var decimal_clicked = false;
-        var output_array = [];
-        var objectsInArray = false;
-        var currentlyequal;
 
-        $(document).ready(function () {
-            $('button').click(function () {
-                justclicked = this.outerText;
-                buttontype = this.name;
-                buttonselector();
-                areThereObjectsInTheArray();
-                //evaluate_array();
-            });
-
-        });
-
-        function buttonClicked() {
-            console.log('You just clicked = ', justclicked);
-            if (typeof firstclick == 'undefined') {
-                if (objectsInArray == false) {
-                    if (buttontype == 'number') {
-                        firstclick = justclicked;
-                        firstclick_filled = true;
-                    }
-                    else if (buttontype == 'decimal') {
-                        firstclick = '0' + '' + justclicked;
-                        decimal_clicked = true;
-                        firstclick_filled = true;
-                    }
-
-                }
-                if (objectsInArray == true) {
-                    if (buttontype == 'number') {
-                        firstclick = justclicked;
-                        firstclick_filled = true;
-                    }
-                    else if (buttontype == 'decimal') {
-                        firstclick = '0' + '' + justclicked;
-                        decimal_clicked = true;
-                        firstclick_filled = true;
-                    }
-                    else if (buttontype == 'operator') {
-                        firstclick = justclicked;
-                        firstclick_filled = true;
-                        var protoStore;
-                        var protoStoreName;
-                        var indexToAdd = output_array.length - 1;
-                        protoStore = Object.getPrototypeOf(output_array[output_array.length - 1]);
-                        protoStoreName = protoStore.constructor.name;
-                        var anotherOperator = new output_operator(firstclick, typeof firstclick);
-                        if (protoStoreName == "output_operator") {
-                            output_array.splice(indexToAdd, 1, anotherOperator);
-                            console.log(output_array);
-                        }
-                        else {
-                            output_array.push(anotherOperator);
-                            console.log(output_array);
-                        }
-                    }
-                    /*firstclick = undefined;
-                     firstclick_filled = false;*/
-                }
-                else {
-                    firstclick = justclicked;
-                    firstclick_filled = true;
-                }
-            }
-            else {
-                secondclick = justclicked;
-                secondclick_filled = true;
-
-            }
-            if ((firstclick_filled) && (secondclick_filled) && (buttontype == 'number')) {
-                firstclick = parseFloat(firstclick + '' + secondclick);
-                secondclick = undefined;
-                //console.log('the value of firstclick is now: ', firstclick, ' and the value of second click is now: ', secondclick);
-            }
-            if ((firstclick_filled) && (secondclick_filled) && (buttontype == 'decimal')) {
-                if (decimal_clicked == false) {
-                    firstclick = parseFloat(firstclick) + '' + secondclick;
-                    secondclick = '';
-                    decimal_clicked = true;
-                    //console.log('the value of firstclick is now: ', firstclick, ' the typeof firstclick is: ', typeof firstclick, ' and the value of second click is now: ', secondclick);
-                }
-            }
-
-            if ((firstclick_filled == true) && (secondclick_filled == true) && (buttontype == 'operator')) {
-                //console.log('an operator was clicked');
-                firstclick = parseFloat(firstclick);
-                var first_output_number = new output_number(firstclick, typeof firstclick);
-                output_array.push(first_output_number);
-                decimal_clicked = false;
-                var first_operator = new output_operator(secondclick, typeof secondclick);
-                output_array.push(first_operator);
-                //console.log(output_array);
-                clearclicks();
-
-            }
-
-
-        }
-
-        function output_number(value, type) {
-            this.value = value;
-            this.type = type;
-        }
-
-        function output_operator(value, type) {
-            this.value = value;
-            this.type = type;
-            this.addition = function () {
-                return (output_array[0].value + output_array[2].value);
-            };
-            this.subtraction = function () {
-                return (output_array[0].value - output_array[2].value);
-            };
-            this.multiplication = function () {
-                return (output_array[0].value * output_array[2].value);
-            };
-            this.division = function () {
-                return (output_array[0].value / output_array[2].value);
-            }
-        }
-
-        function equals_operator(value, type) {
-            this.value = value;
-            this.type = type;
-        }
-
-        function evaluate_array() {
-                var the_operator = output_array[1].value;
-                var value;
-                //console.log('the operator = ', the_operator);
-                switch (the_operator) {
-                    case '+':
-                        value = parseFloat(output_array[1].addition());
-                        var addition_evaluation = new output_number(value, typeof value);
-                        console.log(addition_evaluation);
-                        output_array.splice(0, 3, addition_evaluation);
-                        console.log(output_array);
-                        currentlyequal = output_array[0].value;
-                        break;
-                    case '-':
-                        value = parseFloat(output_array[1].subtraction());
-                        var subtraction_evaluation = new output_number(value, typeof value);
-                        console.log(subtraction_evaluation);
-                        output_array.splice(0, 3, subtraction_evaluation);
-                        console.log(output_array);
-                        currentlyequal = output_array[0].value;
-                        break;
-                    case 'x':
-                        value = parseFloat(output_array[1].multiplication());
-                        var multiplication_evaluation = new output_number(value, typeof value);
-                        console.log(multiplication_evaluation);
-                        output_array.splice(0, 3, multiplication_evaluation);
-                        console.log(output_array);
-                        currentlyequal = output_array[0].value;
-                        break;
-                    case '/':
-                        value = parseFloat(output_array[1].division());
-                        var division_evaluation = new output_number(value, typeof value);
-                        console.log(division_evaluation);
-                        output_array.splice(0, 3, division_evaluation);
-                        console.log(output_array);
-                        currentlyequal = output_array[0].value;
-                        break;
-
-
-                }
-            }
-
-
-
-
-        function buttonselector() {
-            console.log('the type of button you selected is: ' + buttontype);
-            switch (buttontype) {
-                case 'clear':
-                    clearthis();
-                    //console.log('clear this function');
-                    break;
-                case 'all_clear':
-                    allclear();
-                    //console.log('all clear function');
-                    break;
-                case 'equals':
-                    equals();
-                    //console.log('equals function');
-                    break;
-                default:
-                    buttonClicked();
-                    //console.log('button clicked function');
-                    break;
-            }
-
-        }
-
-        function allclear() {
-            output_array = [];
-            objectsInArray = false;
-            clearclicks();
-            //console.log(output_array);
-        }
-
-        function areThereObjectsInTheArray() {
-            if (output_array.length > 0) {
-                objectsInArray = true;
-            }
-            //console.log('there are objects in the array');
-        }
-
-        function clearthis() {
-            output_array.pop();
-            clearclicks();
-            console.log('now the array looks like: ',output_array);
-        }
-
-        function clearclicks() {
-            firstclick = undefined;
-            firstclick_filled = false;
-            secondclick = undefined;
-            secondclick_filled = false;
-            decimal_clicked = false;
-            justclicked = undefined;
-            buttontype = undefined;
-        }
-
-        function equals() {
-            //console.log('the equals button has been pressed');
-            secondclick = '=';
-            var outputString= '';
-            //console.log('the output array currently holds ' + output_array.length + ' objects');
-            //console.log('current output_array: ', output_array);
-            //console.log('current first click: ', firstclick);
-            //console.log('current second click: ', secondclick);
-            switch (output_array.length) {
-                case 0:
-                    checkFirstClickAndPush();
-                    console.log('the final value is: ', output_array[0].value);
-                    break;
-                case 1:
-                    console.log('for this to happen, someone had to pop the operator. I think');
-                    console.log('the final value is: ', output_array[0].value);
-                    break;
-                case 2:
-                    checkFirstClickAndPush();
-                    //evaluate_array();
-                    console.log(output_array);
-                    break;
-                case 3:
-                    console.log('Someone must have pushed 2 operators');
-                    break;
-            }
-            var pushedequals = new equals_operator(secondclick, typeof secondclick);
-            output_array.push(pushedequals);
-            console.log('after clicking the equals button, the output array looks like: ', output_array);
-            for(var i=0; i<output_array.length; i++) {
-                console.log(output_array[i].value);
-                outputString += output_array[i].value;
-            }
-console.log(outputString);
-        }
-
-        function checkFirstClickAndPush() {
-            if (Math.abs(parseFloat(firstclick)) >= 0) {
-                firstclick = parseFloat(firstclick);
-                var aNumber = new output_number(firstclick, typeof firstclick);
-                output_array.push(aNumber);
-                //console.log(output_array);
-            }
-            else if (firstclick == '0.') {
-                firstclick = parseFloat(firstclick);
-                var decimalNumber = new output_number(firstclick, typeof firstclick);
-                output_array.push(decimalNumber);
-                //console.log(output_array);
-            }
-        }
-
-
-        function callback(type, value, item) {
-            //console.log('type: ', type, ' value: ', value, ' item: ', item);
-            switch (value) {
-                case undefined:
-                    $('#display_area').html('');
-                    break;
-                default:
-                    $('#display_area').html(value);
-                    break;
-            }
-        }
-
-        var my_calculator = new calculator(callback);
-
-        $(document).ready(function () {
-            $('button').on('click', function () {
-                var val = $(this).text();
-                switch (val) {
-                    case 'AC':
-                        my_calculator.allClear();
-                        break;
-                    case 'C':
-                        my_calculator.clear();
-                        break;
-                    default:
-                        my_calculator.addItem($(this).text());
-                        break;
-                }
-                //console.log(val, my_calculator);
-            });
-        })
-
-    </script>
+    <!--Individual styling -->
+    <link rel="stylesheet" type="text/css" href="style_calculator.css">
+    <script src="calculator_oop.js"></script>
 </head>
 <body>
-<div class="container calculator">
-    <div class="row">
-        <div class="col-md-12 the_display" id="display_area">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
+<div class="container-fluid">
+    <div id="calculator" class="text-center 0">
+        <form>
             <div class="row">
-                <div class="col-md-12 center_buttons_container">
-                    <div class="row top">
-                        <div class="col-md-3">
-                            <button type="button" class="btn btn-default" name="clear">C</button>
-                        </div>
-                        <div class="col-md-3">
-                            <button type="button" class="btn btn-default" name="all_clear">AC
-                            </button>
-                        </div>
-                        <div class="col-md-4">
-                            <button type="button" class="btn btn-default btn-block" name="operator">+</button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-default" name="number">7</button>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-default" name="number">8</button>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-default" name="number">9</button>
-                        </div>
-                        <div class="col-md-4">
-                            <button type="button" class="btn btn-default btn-block" name="operator">-</button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-default" name="number">4</button>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-default" name="number">5</button>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-default" name="number">6</button>
-                        </div>
-                        <div class="col-md-4">
-                            <button type="button" class="btn btn-default btn-block" name="operator">x</button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-default" name="number">1</button>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-default" name="number">2</button>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-default" name="number">3</button>
-                        </div>
-                        <div class="col-md-4">
-                            <button type="button" class="btn btn-default btn-block" name="operator">/</button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-default" name="number">0</button>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-default" id="decimal" name="decimal">.</button>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-default" name="equals">=</button>
-                        </div>
-                    </div>
-                </div>
+                <input type=text id="display" value="" class="">
             </div>
-        </div>
+            <div class="row">
+                <input type="button" value="AC" class="keys clearAll">
+                <input type="button" value="C" class="keys clear">
+                <input type="button" value="+/-" class="keys posneg">
+                <input type="button" value="÷" class="keys operator">
+            </div>
+            <div class="row">
+                <input type="button" value="7" class="keys number">
+                <input type="button" value="8" class="keys number">
+                <input type="button" value="9" class="keys number">
+                <input type="button" value="X" class="keys operator">
+            </div>
+            <div class="row">
+                <input type="button" value="4" class="keys number">
+                <input type="button" value="5" class="keys number">
+                <input type="button" value="6" class="keys number">
+                <input type="button" value="-" class="keys operator">
+            </div>
+            <div class="row">
+                <input type="button" value="1" class="keys number">
+                <input type="button" value="2" class="keys number">
+                <input type="button" value="3" class="keys number">
+                <input type="button" value="+" class="keys operator">
+            </div>
+            <div class="row">
+                <input type="button" value="0" class="keys number zero">
+                <input type="button" value="." class="keys decimal">
+                <input type="button" value="=" class="keys equal">
+            </div>
+
+
+        </form>
     </div>
 </div>
+
+
 </body>
 </html>
