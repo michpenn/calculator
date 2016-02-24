@@ -1,0 +1,111 @@
+body {
+    background: radial-gradient(circle, #fff 20%, #ccc);
+    background-size: contain;
+}
+
+#calculator {
+    font-family: "Courier New";
+    position: relative;
+    top: 50px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 2%;
+    background-color: #C2714F;
+    border: 1px solid black;
+    border-radius: 5px;
+    box-shadow: 0 0 30px gray;
+}
+
+#display {
+    margin: 2% 10%;
+    padding: 0 1%;
+    width: 80%;
+    height: 50px;
+    text-align: right;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #DBD3AD;
+    color: #413f33;
+    border: 1px solid #2b2a22;
+    -webkit-box-shadow: inset 1px 3px 2px 1px rgba(87, 84, 69, 1);
+    -moz-box-shadow: inset 1px 3px 2px 1px rgba(87, 84, 69, 1);
+    box-shadow: inset 1px 3px 2px 1px rgba(87, 84, 69, 1);
+}
+
+.keys {
+    text-align: center;
+    border-top: 1px solid transparent;
+    margin: 1% 1%;
+    background-clip: padding-box;
+    width: 15%;
+    -webkit-border-radius: 14px;
+    -moz-border-radius: 14px;
+    border-radius: 14px;
+    font-size: 1.2em;
+    color: antiquewhite;
+    text-shadow: 1px 1px 3px #afa496;
+}
+
+.zero {
+    width: 33%;
+}
+
+.keys:hover {
+    font-weight: bold;
+}
+
+.number, .decimal {
+    background-color: #F6C5AF;
+    border: 2px solid #7b6257;
+    -webkit-box-shadow: 1px 1px 3px #493b34;
+    -moz-box-shadow: 1px 1px 3px #493b34;
+    box-shadow: 1px 1px 3px #493b34;
+
+}
+
+.number:hover, .decimal:hover {
+    background: #f8d6c7;
+    background-image: -webkit-linear-gradient(top, #f8d6c7, #f6cab7);
+    background-image: -moz-linear-gradient(top, #f8d6c7, #f6cab7);
+    background-image: -ms-linear-gradient(top, #f8d6c7, #f6cab7);
+    background-image: -o-linear-gradient(top, #f8d6c7, #f6cab7);
+    background-image: linear-gradient(to bottom, #f8d6c7, #f6cab7);
+    text-decoration: none;
+}
+
+.clear, .clearAll, .posneg {
+    background-color: #D36060;
+    border: 2px solid #934343;
+    -webkit-box-shadow: 1px 1px 3px #7e3939;
+    -moz-box-shadow: 1px 1px 3px #7e3939;
+    box-shadow: 1px 1px 3px #7e3939;
+}
+
+.clear:hover, .clearAll:hover, .posneg:hover {
+    background: #e08f8f;
+    background-image: -webkit-linear-gradient(top, #e08f8f, #d76f6f);
+    background-image: -moz-linear-gradient(top, #e08f8f, #d76f6f);
+    background-image: -ms-linear-gradient(top, #e08f8f, #d76f6f);
+    background-image: -o-linear-gradient(top, #e08f8f, #d76f6f);
+    background-image: linear-gradient(to bottom, #e08f8f, #d76f6f);
+    text-decoration: none;
+}
+
+.operator, .equal {
+    background-color: #E0607E;
+    border: 2px solid #86394b;
+    -webkit-box-shadow: 1px 1px 3px #592632;
+    -moz-box-shadow: 1px 1px 3px #592632;
+    box-shadow: 1px 1px 3px #592632;
+}
+
+.operator:hover, .equal:hover {
+    background: #e36f8a;
+    background-image: -webkit-linear-gradient(top, #e36f8a, #ec9fb1);
+    background-image: -moz-linear-gradient(top, #e36f8a, #ec9fb1);
+    background-image: -ms-linear-gradient(top, #e36f8a, #ec9fb1);
+    background-image: -o-linear-gradient(top, #e36f8a, #ec9fb1);
+    background-image: linear-gradient(to bottom, #e36f8a, #ec9fb1);
+    text-decoration: none;
+}
