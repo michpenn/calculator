@@ -66,7 +66,6 @@ Calculator.prototype = {
                 this.inputArray.push(number);
 
             }
-            //else if
         }
         else {
             number = new Input(this.currentInput, 'number', false, false);
@@ -148,45 +147,51 @@ Calculator.prototype = {
         var checkPrecedenceFlag = true;
         var counter = 0;
         var i = 0;
-        while (inputStack.length > 1) {
-            if (checkPrecedenceFlag) {
-                if (inputStack[i].type == 'number' || (inputStack[i].type == 'operator' && (!inputStack[i].hasPrecedence))) {
-                    i++;
-                    if (i >= inputStack.length - 1) {
-                        checkPrecedenceFlag = false;
-                        i = 0;
+        if(inputStack[inputStack.length-1].type === 'number'){
+            while (inputStack.length > 1) {
+                if (checkPrecedenceFlag) {
+                    if (inputStack[i].type == 'number' || (inputStack[i].type == 'operator' && (!inputStack[i].hasPrecedence))) {
+                        i++;
+                        if (i >= inputStack.length - 1) {
+                            checkPrecedenceFlag = false;
+                            i = 0;
+                        }
+                        continue;
                     }
-                    continue;
                 }
-            }
-            if (inputStack[i].type == 'operator') {
-                var result;
-                switch (inputStack[i].value) {
-                    case('+'):
-                        result = this.addition(inputStack[i - 1].value, inputStack[i + 1].value);
-                        break;
-                    case('-'):
-                        result = this.subtraction(inputStack[i - 1].value, inputStack[i + 1].value);
-                        break;
-                    case('X'):
-                        result = this.multiplication(inputStack[i - 1].value, inputStack[i + 1].value);
-                        break;
-                    case('÷'):
-                        result = this.division(inputStack[i - 1].value, inputStack[i + 1].value);
-                        break;
+                if (inputStack[i].type == 'operator') {
+                    var result;
+                    switch (inputStack[i].value) {
+                        case('+'):
+                            result = this.addition(inputStack[i - 1].value, inputStack[i + 1].value);
+                            break;
+                        case('-'):
+                            result = this.subtraction(inputStack[i - 1].value, inputStack[i + 1].value);
+                            break;
+                        case('X'):
+                            result = this.multiplication(inputStack[i - 1].value, inputStack[i + 1].value);
+                            break;
+                        case('÷'):
+                            result = this.division(inputStack[i - 1].value, inputStack[i + 1].value);
+                            break;
+                    }
+                    result = new Input(result, 'number', false, false);
+                    inputStack.splice(i - 1, 3, result);
+                    i = 0;
                 }
-                result = new Input(result, 'number', false, false);
-                inputStack.splice(i - 1, 3, result);
-                i = 0;
-            }
-            i++;
-            counter++;
-            if (counter > 200) {
-                break;
-            }
+                i++;
+                counter++;
+                if (counter > 200) {
+                    break;
+                }
 
+            }
+            self.calcResult = inputStack[inputStack.length - 1];
         }
-        self.calcResult = inputStack[inputStack.length - 1];
+        else if (inputStack[inputStack.length-1].type === 'operator') {
+            console.log(inputStack[inputStack.length-1]);
+            //while (inputStack.length > 1) {}
+        }
     }
     ,
     addition: function (param1, param2) {
